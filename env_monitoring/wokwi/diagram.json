@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "author": "PRAYAS team (SIH 2026)",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-text", "id": "title", "top": 8, "left": 48, "attrs": { "text": "PRAYAS sensor node — ESP32-S3 (Wokwi simulation)" } },
+    { "type": "board-esp32-s3-devkitc-1", "id": "esp", "top": 96, "left": 288, "attrs": {} },
+
+    { "type": "wokwi-hc-sr04", "id": "sonic", "top": 96, "left": 48, "attrs": { "distance": "180" } },
+    { "type": "wokwi-dht22", "id": "dht", "top": 288, "left": 48, "attrs": { "temperature": "31", "humidity": "55" } },
+    { "type": "wokwi-mpu6050", "id": "imu", "top": 470, "left": 48, "attrs": {} },
+
+    { "type": "wokwi-gas-sensor", "id": "mq135", "top": 96, "left": 600, "attrs": { "ppm": "400" } },
+    { "type": "wokwi-gas-sensor", "id": "mq2", "top": 288, "left": 600, "attrs": { "ppm": "350" } },
+    { "type": "wokwi-potentiometer", "id": "soil", "top": 470, "left": 600, "attrs": { "value": "350" } },
+
+    { "type": "wokwi-pushbutton", "id": "rain", "top": 640, "left": 200, "attrs": { "color": "blue", "label": "Rain tip", "bounce": "0" } },
+    { "type": "wokwi-buzzer", "id": "siren", "top": 660, "left": 420, "attrs": {} },
+    { "type": "wokwi-resistor", "id": "ledres", "top": 648, "left": 560, "attrs": { "value": "220" } },
+    { "type": "wokwi-led", "id": "alertled", "top": 648, "left": 660, "attrs": { "color": "red" } },
+
+    { "type": "wokwi-text", "id": "lbl_lora", "top": 740, "left": 48, "attrs": { "text": "SX1262 LoRa: no Wokwi model — SPI (SCK12/MISO13/MOSI11/NSS10) + DIO1(14)/RST(15)/BUSY(16) reserved in firmware" } },
+    { "type": "wokwi-text", "id": "lbl_pms", "top": 772, "left": 48, "attrs": { "text": "PMS5003 AQI: no Wokwi model — UART1 RX(17) reserved in firmware" } },
+    { "type": "wokwi-text", "id": "lbl_subs", "top": 804, "left": 48, "attrs": { "text": "Stand-ins: HC-SR04=JSN-SR04T, DHT22=BME680, MPU6050=LIS3DH, pot=soil, btn=rain" } }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+
+    [ "esp:5V", "sonic:VCC", "red", [] ],
+    [ "esp:5V", "mq135:VCC", "red", [] ],
+    [ "esp:5V", "mq2:VCC", "red", [] ],
+    [ "esp:3V3", "dht:VCC", "orange", [] ],
+    [ "esp:3V3", "imu:VCC", "orange", [] ],
+    [ "esp:3V3", "soil:VCC", "orange", [] ],
+
+    [ "esp:GND", "sonic:GND", "black", [] ],
+    [ "esp:GND", "dht:GND", "black", [] ],
+    [ "esp:GND", "imu:GND", "black", [] ],
+    [ "esp:GND", "mq135:GND", "black", [] ],
+    [ "esp:GND", "mq2:GND", "black", [] ],
+    [ "esp:GND", "soil:GND", "black", [] ],
+    [ "esp:GND", "rain:2.l", "black", [] ],
+    [ "esp:GND", "siren:1", "black", [] ],
+    [ "esp:GND", "alertled:C", "black", [] ],
+
+    [ "sonic:TRIG", "esp:5", "green", [] ],
+    [ "sonic:ECHO", "esp:6", "yellow", [] ],
+    [ "dht:SDA", "esp:7", "green", [] ],
+    [ "imu:SDA", "esp:8", "blue", [] ],
+    [ "imu:SCL", "esp:9", "purple", [] ],
+    [ "mq135:AO", "esp:1", "yellow", [] ],
+    [ "mq135:DO", "esp:39", "white", [] ],
+    [ "mq2:AO", "esp:2", "yellow", [] ],
+    [ "mq2:DO", "esp:40", "white", [] ],
+    [ "soil:SIG", "esp:4", "yellow", [] ],
+    [ "rain:1.l", "esp:42", "green", [] ],
+    [ "siren:2", "esp:21", "orange", [] ],
+    [ "esp:38", "ledres:1", "orange", [] ],
+    [ "ledres:2", "alertled:A", "orange", [] ]
+  ]
+}
